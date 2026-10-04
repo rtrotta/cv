@@ -1,0 +1,113 @@
+%!TEX root = CV_Master.tex
+
+
+%******************************************************************
+\vspace{\baselineskip}
+\tlnewnospace{Competitive Grants --- Science \& Knowledge Transfer }
+
+% \grant / \grantE arguments:
+%   {title/role}{year}{awarding body}{display value}{numeric value, in £k or €k}[PI]
+%   - the display value (#5) is exactly what is typeset, unchanged from before;
+%   - the numeric value (#6) is the same figure as a plain decimal number,
+%     used only to feed the running totals below (kept separate from the
+%     display string so the sum never depends on parsing formatted text);
+%   - append [PI] when the role is PI, to also add the amount to the
+%     PI-only sub-total;
+%   - a starred form \grant*{...}/\grantE*{...} excludes the entry from
+%     both totals (e.g. an award that was declined and never received).
+% \grantsubtotal prints the running GBP/EUR totals (+ PI sub-totals)
+% and resets them, so each block below is summed independently.
+% The display value (#5) is automatically bolded whenever the numeric
+% value (#6) is >=100 (i.e. above 100k, in either currency) -- no manual
+% \textbf{} needed in the individual entries any more.
+\NewDocumentCommand{\grant}{s m m m m m O{}}{%
+  \item {{\em #2} (#3)}. { \dotfill \pounds {\gBoldIfBig{#6}{#5}}}{\newline Awarding body: #4}. %
+  \IfBooleanF{#1}{%
+    \gAddGBP{#6}%
+    \ifstrequal{#7}{PI}{\gAddGBPpi{#6}}{}%
+  }%
+}
+\NewDocumentCommand{\grantE}{s m m m m m O{}}{%
+  \item {\em{#2} (#3)}. { \dotfill \euro {\gBoldIfBig{#6}{#5}}}{\newline Awarding body: #4}. %
+  \IfBooleanF{#1}{%
+    \gAddEUR{#6}%
+    \ifstrequal{#7}{PI}{\gAddEURpi{#6}}{}%
+  }%
+}
+
+%******************************************************************
+
+\grantgrandtotal
+\noindent Grants above 100k (in either currency) are highlighted in bold.
+\vspace{\baselineskip}
+
+\begin{enumerate}
+\grantE{Artificial Intelligence for Fundamental Physics: Open Roadmapping and Inclusive Actions (AIFORIA), Co-I and member of Management Board}{2026}{COST (European cooperation in science \& technology); PI: C. Weniger}
+{600k}{600}
+\grantE{Living Lab per applicazioni Deep Tech in AI, Big Data, HPC e Quantum Computing (DT-LAB), Co-I (salary co-fund)}{2026}{Fondazione ICSC; SISSA lead: M. Viel}{310k}{310}
+\grantE{Optimal inference from radio images of the epoch of reionization, Co-I}{2022}{Ministero dell'Università e della Ricerca, Prin programme; PI: A. Mesinger}{192k}{192}
+\grantE{Centro Nazionale Future Artificial Intelligence Research (FAIR), Spoke Edge and Exascale computing, Co-I (1 postdoc \& salary co-fund)}{2022}{PNRR, Italian Government; SISSA lead: G. Sanguinetti}{520k}{520}
+\grantE{Centro Nazionale HPC and Quantum Computing, Spoke COSMOS, Co-I (1 postdoc \& salary co-fund)}{2022}{PNRR, Italian Government; SISSA lead: M. Viel}{565k}{565}
+\grantE{Data Science methods for Multi-Messenger Astrophysics \& Multi-Survey Cosmology, PI (1 postdoc)}{2022}{PRO3 Programma congiunto}{140k}{140}[PI]
+%\grant{M-Theory, Cosmology and Quantum Field Theory, co-I\footnote[2]{For group-wide grants of this type, the PI is by default the Head of Group, but all co-I's contribute to the scientific proposal.}}{2019}{STFC}{6.4M}{6400}
+\grant{Particle Physics Theory Consolidated Grant, co-I (1 postdoc \& salary co-fund)}{2016}{STFC; PI: J. Gauntlett}{6.2M}{6200}
+\grant{Astrophysics Consolidated Grant, co-I (1 postdoc \& salary co-fund)}{2016}{STFC; PI: S. Warren}{2.4M}{2400}
+\grant{Impact Acceleration Grant, PI}{2016}{EPSRC}{46k}{46}[PI]
+\grant{Impact Acceleration Award, PI}{2014}{STFC}{15k}{15}[PI]
+\grant{Pathways to Impact funding, PI}{2013}{EPSRC}{14k}{14}[PI]
+\grant{Astrophysics Consolidated Grant, Co-I (1 postdoc \& salary co-fund)}{2012}{STFC; PI: A. Jaffe}{463k}{463}
+%\grant{Extragalactic Astronomy and Cosmology Rolling Grant, co-I$^\dagger$}{2009}{STFC}{1M}{1000}
+\grant{Sir Norman Lockyer Fellowship, PI}{2005}{Royal Astronomical Society}{150k}{150}[PI]
+\grant*{Postdoctoral Fellowship, PI (declined)}{2005}{European Space Agency}{ 90k}{90}
+\grantsubtotal
+
+\tlnewnospace{\vspace{\baselineskip} \\ Competitive Grants --- Science Communication \& Education}
+\grantE{Erasmus Mundus programme development support, co-I and SISSA lead}{2026}{EU}{60k}{60}
+\grantE{Incentivi Triennali alle Iniziative di Divulgazione, Festival Scienza \& Virgola, PI}{2026}{Regione FVG}{200k}{200}[PI]
+\grantE{Investigative journalism grant, co-I}{2025}{Journalism Science Alliance; PI: E. Tola}{50k}{50}
+\grantE{Bando Divulgazione Cultura Scientifica, PI}{2025}{Regione FVG}{30k}{30}[PI]
+\grantE{History of the cosmos exhibit for the Dennis Sciama corridor, PI and SISSA lead}{2025}{SISSA Director's fund}{40k}{40}[PI]
+\grantE{Stelle Scadenti: theatre play production, PI}{2021}{Regione Autonoma Friuli Venezia Giulia}{25k}{25}[PI]
+\grant{The Edge of the Sky storytelling project, co-I}{2020}{Creative Scotland; PI: A. Eaton-Lewis}{12k}{12}
+\grant{Pedagogy Transformation Grant, co-I}{2018}{Education Office, Imperial College London}{451k}{451}
+\grant{Public Engagement Grant, PI}{2016}{Royal Astronomical Society}{1.5k}{1.5}[PI]
+\grant{Public Engagement Grant, PI}{2016}{Institute of Physics}{2k}{2}[PI]
+\grant{Public Engagement Fellowship, PI (salary co-fund)}{2013}{STFC}{106k}{106}[PI]
+\grant{Public Engagement Grant, PI}{2011}{STFC}{8.5k}{8.5}[PI]
+\grantsubtotal
+
+
+
+\tlnewnospace{\vspace{\baselineskip} \\ Travel Grants, Student Fellowships and Conference Support Grants}
+\grantE{Visiting Scientist Travel Grant, PI}{2026}{SISSA}{4k}{4}[PI]
+\grantE{Visiting Scientist Travel Grant, PI}{2024}{SISSA}{10k}{10}[PI]
+\grantE{PhD studentship Dottorati Green/Innovazione/DM 351, PI}{2023}{PNRR, Italian Government}{100k}{100}[PI]
+\grantE{PhD studentship PON Innovazione, PI}{2021}{PNRR, Italian Government}{100k}{100}[PI]
+\grant{PhD studentship, PI}{2017}{STFC}{70k}{70}[PI]
+\grant{Development of Novel Statistical Tools for the Analysis of Astronomical Data, Marie Skodowska-Curie Research and Innovation Staff Exchange, co-I}{2016}{European Commission; PI: D. van Dyk}{107k}{107}
+\grant{Travel and Exchange Grant, PI}{2016}{Royal Society}{12k}{12}[PI]
+\grant{SPRINT Collaboration Grant, PI}{2016}{FAPESP-Imperial}{10k}{10}[PI]
+\grant{Conference Organization Grant, PI}{2015}{IFT, Madrid}{35k}{35}[PI]
+\grant{Data Analysis Summer School funding, Co-I}{2014}{STFC}{23k}{23}
+\grant{Search for Dark Matter particles with the XENON experiment collaboration exchange, PI}{2013}{Imperial College Trust}{6k}{6}[PI]
+\grant{PhD studentship, PI}{2013}{STFC}{70k}{70}[PI]
+\grant{Programme Organization Grant, PI}{2013}{KITP, Santa Barbara}{65k}{65}[PI]
+\grant{Travel and Exchange Grant, PI}{2012}{Royal Society}{12k}{12}[PI]
+\grant{CosmoClassic Cross-Disciplinary Collaboration, Co-I}{2012}{Faculty Strategic Research Fund, Imperial College London}{16k}{16}
+\grant{Conference Organization Grant, Co-I}{2012}{Centre Stefano Franscini, ETHZ}{25k}{25}
+%\grant{Travel Grant, PI}{2011}{Deutsche Studentstiftung}{1.5k}{1.5}[PI]
+%\grant{PhD studentship, PI}{2011}{Deutsche Studentstiftung}{36k}{36}[PI]
+\grant{Summer Student Project Bursaries, PI}{2011}{UROP}{3k}{3}[PI]
+\grant{PhD Studentship Extension Funding, PI}{2011}{Royal Astronomical Society}{3k}{3}[PI]
+\grant{Travel Grant, PI}{2010}{Royal Astronomical Society}{2k}{2}[PI]
+\grant{PhD studentship, PI}{2008}{STFC}{70k}{70}[PI]
+\grantsubtotal
+\gWriteGrantGrandTotal
+
+
+
+
+
+\end{enumerate}
+
+

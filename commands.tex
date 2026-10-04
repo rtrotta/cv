@@ -1,0 +1,341 @@
+% =====================================================
+% Modern CV — styling commands
+% =====================================================
+
+% --- 1. Accent colour ---
+\definecolor{cvaccent}{HTML}{006795}      % MidnightBlue
+\definecolor{cvmuted}{HTML}{6B7280}       % grey for dates / secondary text
+
+% --- 2. Inline highlighted phrase (bold, MidnightBlue, TitleCase) ---
+\newcommand{\txthl}[1]{\textcolor{cvaccent}{\textbf{\titlecap{#1}}}}
+
+% --- 3. Top-level CV section heading ----------------------------------
+% NB: \noindent before the \rule line is essential — without it, the
+% paragraph starts with \parindent (15pt) and the rule overshoots the
+% margin by exactly that amount.
+% The heading block itself consumes ~2.5\baselineskip (vspace + \Large
+% title line + rule + vspace). What follows immediately (e.g.
+% \cvsmallheading) does its OWN separate \needspace check (5\baselineskip)
+% that is only evaluated AFTER the heading has already been placed --
+% so the two checks don't automatically compose. To guarantee the
+% heading is never left alone at the bottom of a page, this value must
+% cover the heading's own height PLUS whatever the very next \needspace
+% check downstream demands (2.5 + 5 = 7.5, so 10 gives comfortable
+% margin). 4, then 7\baselineskip were tried first and both still left
+% "Clients" (CV_Consulting.tex) orphaned -- confirmed by rendering the
+% compiled page.
+\newcommand{\cvsection}[1]{%
+  \needspace{10\baselineskip}%
+  \par
+  \vspace{0.9\baselineskip}%
+  \noindent
+  {\color{cvaccent}{\Large\bfseries \titlecap{#1}}\par}%
+  \vspace{-0.05\baselineskip}%
+  \noindent{\color{cvaccent}\rule{\linewidth}{0.4pt}\par}%
+  \vspace{0.4\baselineskip}%
+}
+
+% --- 3b. Same as cvsection but without titlecap (safe for headings that
+%        contain commands like \vspace, \\ or punctuation like '–' that
+%        would confuse \titlecap). Use for legacy already-cased titles. ---
+\newcommand{\cvsectionraw}[1]{%
+  \needspace{10\baselineskip}%
+  \par
+  \vspace{0.9\baselineskip}%
+  \noindent
+  {\color{cvaccent}{\Large\bfseries #1}\par}%
+  \vspace{-0.05\baselineskip}%
+  \noindent{\color{cvaccent}\rule{\linewidth}{0.4pt}\par}%
+  \vspace{0.4\baselineskip}%
+}
+
+% --- 4. Block-style sub-section (smaller than cvsection) --------------
+\newcommand{\cvsubsection}[1]{%
+  \needspace{5\baselineskip}%
+  \par
+  \vspace{0.5\baselineskip}%
+  \noindent{\color{cvaccent}\bfseries \titlecap{#1}}\par
+  \vspace{0.15\baselineskip}%
+}
+
+% --- 5. Inline lead-in heading (runs into following text) -------------
+\newcommand{\somespace}{\vspace{0.55em}}
+\newcommand{\cvsmallheading}[1]{\needspace{5\baselineskip}\par\somespace\noindent\txthl{#1}\hspace{0.3em}\ignorespaces}
+
+% --- 5b. Same as cvsmallheading but without titlecap (safe for headings
+%        that contain a literal '–' or other punctuation that breaks
+%        \titlecap's word-scanning under pdfLaTeX -- same rationale as
+%        \cvsectionraw above). Use for already-cased text. -------------
+\newcommand{\txthlraw}[1]{\textcolor{cvaccent}{\textbf{#1}}}
+\newcommand{\cvsmallheadingraw}[1]{\needspace{5\baselineskip}\par\somespace\noindent\txthlraw{#1}\hspace{0.3em}\ignorespaces}
+
+% --- 6. CV entry: date | role | details -------------------------------
+\newlength{\datebox}
+\setlength{\datebox}{1.7cm}
+\newcommand{\cventry}[3]{%
+  \noindent
+  \parbox[t]{\datebox}{\raggedright\small\color{cvmuted} #1}%
+  \hspace{0.5em}%
+  \parbox[t]{\dimexpr\linewidth-\datebox-0.6em\relax}{%
+    \textbf{\leavevmode #2}\\[0.15\baselineskip]%
+    \small #3%
+  }%
+  \par\vspace{0.35\baselineskip}%
+}
+
+% --- 6b. Compact dated entry: date column | description text.
+%        Uses hanging-indent layout so (a) the year sits on exactly
+%        the same baseline as the first line of text, and (b) all
+%        continuation lines start at the same horizontal position
+%        regardless of whether the date is a single year or a range.
+%        \cvdatesep is the gap between the date box and the text. ------
+\newlength{\cvdatesep}
+\setlength{\cvdatesep}{0.45em}
+\newcommand{\cvitem}[2]{%
+  \par\noindent
+  \hangindent=\dimexpr\datebox+\cvdatesep\relax
+  \hangafter=1
+  \makebox[\datebox][l]{\small\color{cvmuted} #1}%
+  \hspace{\cvdatesep}%
+  {\small #2}%
+  \par\vspace{0.15\baselineskip}%
+}
+
+% --- 6c. \cvitemwide is now identical to \cvitem (kept for compatibility
+%        with existing module files — the old wider-box variant is no
+%        longer needed since \datebox is set consistently). -------------
+\newlength{\datebigbox}
+\setlength{\datebigbox}{2.2cm}
+\newcommand{\cvitemwide}[2]{\cvitem{#1}{#2}}
+
+% --- 7. Section band (used as Part divider) ---------------------------
+\NewDocumentCommand{\sectionband}{ O{cvaccent} O{white} m }{%
+  \par\medskip
+  \noindent
+  \begingroup
+    \setlength{\fboxsep}{0.7ex}%
+    \colorbox{#1}{%
+      \parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
+        \raggedright\bfseries\Large \textcolor{#2}{#3}%
+      }%
+    }%
+  \endgroup
+  \par\smallskip
+}
+
+% --- 8. Author name + journal helpers (used in Publications module) ---
+\providecommand{\rt}{{\bfseries R.~Trotta}\xspace}
+\providecommand{\etal}{{\itshape et al.}\xspace}
+
+% =====================================================
+% Compatibility layer for existing module files
+% (lets the original CV_Academia.tex, CV_Publications.tex, etc.
+% compile under the new style without rewriting them)
+% =====================================================
+
+% Map legacy headings onto new style. Legacy headings are already in title
+% case and sometimes contain inline commands (\vspace, \\) so we route them
+% through \cvsectionraw, which does NOT apply \titlecap.
+\providecommand{\maintitle}[1]{\needspace{6\baselineskip}\sectionband{#1}}
+% (\cvsectionraw already does its own \needspace, so no need to repeat it here.)
+\providecommand{\tlnew}[1]{\cvsectionraw{#1}}
+\providecommand{\tlnewnospace}[1]{\cvsectionraw{#1}}
+\providecommand{\subt}[1]{\needspace{3\baselineskip}\par\medskip\noindent{\bfseries\itshape\color{cvaccent}#1}\par\smallskip}
+\providecommand{\sectitle}[1]{\cvsectionraw{#1}}
+
+% Column widths used by original tabular layouts.
+% colthreewidth was set to 14cm in the legacy modules, which sits ~15pt
+% past the available text width with 2cm side margins under \small in
+% Part II — the source of all the "Overfull \hbox (15.0pt too wide)"
+% warnings. 13.4cm fits and leaves a small breathing margin.
+\providecommand{\colonewidth}{1.4cm}
+\providecommand{\colthreewidth}{13.4cm}
+\providecommand{\colthreewidthshort}{13.4cm}
+\providecommand{\colonewidthlong}{1.9cm}
+
+% Belt and braces: allow LaTeX to stretch interword space a little to
+% absorb stubborn long URLs / titles before flagging an overfull box.
+\setlength{\emergencystretch}{3em}
+
+% Misc spacing & visual macros
+\providecommand{\spa}{\rule{0pt}{11pt}}
+\providecommand{\extraspace}{\rule{0pt}{13pt}}
+\providecommand{\linea}{$\blacktriangleright$~}
+\providecommand{\so}[1]{#1}                     % soul letter-spacing → no-op
+\providecommand{\ul}[1]{\underline{#1}}         % soul underline      → \underline
+\providecommand{\rtcomment}[1]{}                % silence draft comments
+\providecommand{\testimonial}[2]{{\itshape #1}\par\hfill #2\par}
+\providecommand{\cites}[1]{{\bfseries Citations: #1}}
+\providecommand{\mycite}[1]{{\small [#1]}}
+
+% =====================================================
+% Entry-counting infrastructure
+% =====================================================
+\makeatletter
+
+% Active counter name (empty = off)
+\newcommand{\cv@currentcounter}{}
+\newcommand{\setcvcounter}[1]{\renewcommand{\cv@currentcounter}{#1}}
+\newcommand{\clearcvcounter}{\renewcommand{\cv@currentcounter}{}}
+\newcommand{\stepcvcurrent}{%
+  \ifx\cv@currentcounter\@empty\else\stepcounter{\cv@currentcounter}\fi}
+
+% \cvcount{year}{text}: like \cvitem but increments the active counter
+\newcommand{\cvcount}[2]{\stepcvcurrent\cvitem{#1}{#2}}
+
+% \cvsep: elegant separator between merged entries (also increments counter).
+% Uses a forced line-break with small extra gap, then indents to the text
+% column and draws a small accent-coloured marker.
+\newlength{\cvsepvskip}
+\setlength{\cvsepvskip}{0.22\baselineskip}
+\newcommand{\cvsep}{%
+  \stepcvcurrent
+  \unskip\\[\cvsepvskip]%
+  \hspace*{0.5cm}%
+  {\scriptsize\color{cvaccent}$\triangleright$}\enspace
+  \ignorespaces}
+
+% Write a counter's current value to the .aux file so Part I can \ref it.
+\newcommand{\labelcvcount}[1]{%
+  \protected@write\@auxout{}{%
+    \string\newlabel{cvcount@#1}{{\arabic{#1}}{}{}{}{}}}%
+}
+
+\makeatother
+
+% Reference a saved counter value (resolves after second LaTeX pass).
+\newcommand{\refcvcount}[1]{\ref{cvcount@#1}}
+
+% ── counters ──────────────────────────────────────────────────────────────
+% Scientific publications
+\newcounter{nRefPhysicsPapers}
+\newcounter{nRefMLPapers}
+\newcounter{nRefSCPapers}
+\newcounter{nAllRefPapers}
+\newcounter{nBookChapters}
+\newcounter{nWhitePapers}
+\newcounter{nProceedings}
+% PE publications
+\newcounter{nPEBooks}
+\newcounter{nPEBookChapters}
+\newcounter{nPEOtherPubs}
+\newcounter{nAllPEPubs}
+% PE activities
+\newcounter{nPublicLectures}
+\newcounter{nSCTeaching}
+\newcounter{nCoursesPublic}
+\newcounter{nArtProjects}
+\newcounter{nBroadcastMedia}
+\newcounter{nPrintCoverage}
+% Academia
+\newcounter{nInvitedTalks}
+\newcounter{nContribTalks}
+\newcounter{nOrgMeetings}
+
+% =====================================================
+% Grant value totals (used by \grant / \grantE in CV_Grants.tex)
+% =====================================================
+% Running accumulators (plain decimal strings, in currency-k units),
+% reset by \grantsubtotal after each subsection. Exact decimal
+% arithmetic via xfp (\fpeval) -- no floating point/rounding artefacts.
+% "grand" accumulators are never reset -- they run over the whole
+% grant list and feed the overall total at the top (via the .aux file,
+% same forward-reference trick as \pageref{LastPage} elsewhere in the CV).
+\newcommand\gGBPtotal{0}
+\newcommand\gGBPpi{0}
+\newcommand\gEURtotal{0}
+\newcommand\gEURpi{0}
+\newcommand\gGBPgrand{0}
+\newcommand\gGBPgrandpi{0}
+\newcommand\gEURgrand{0}
+\newcommand\gEURgrandpi{0}
+
+\newcommand\gAddGBP[1]{\xdef\gGBPtotal{\fpeval{\gGBPtotal+(#1)}}\xdef\gGBPgrand{\fpeval{\gGBPgrand+(#1)}}}
+\newcommand\gAddGBPpi[1]{\xdef\gGBPpi{\fpeval{\gGBPpi+(#1)}}\xdef\gGBPgrandpi{\fpeval{\gGBPgrandpi+(#1)}}}
+\newcommand\gAddEUR[1]{\xdef\gEURtotal{\fpeval{\gEURtotal+(#1)}}\xdef\gEURgrand{\fpeval{\gEURgrand+(#1)}}}
+\newcommand\gAddEURpi[1]{\xdef\gEURpi{\fpeval{\gEURpi+(#1)}}\xdef\gEURgrandpi{\fpeval{\gEURgrandpi+(#1)}}}
+
+% Format a plain number (currency-k) as "Xk" or, above 1000, "XM",
+% rounded to 2 decimal places after the point in the displayed unit
+% (trailing zeros are dropped by xfp, e.g. 2.00 -> "2").
+\newcommand\gFmtMoney[1]{%
+  \ifnum\fpeval{(#1)>=1000}=1
+    \fpeval{round((#1)/1000,2)}M%
+  \else
+    \fpeval{round(#1,2)}k%
+  \fi
+}
+
+% Bold a display string #2 if its numeric value #1 (currency-k) is >=100k
+% -- used to auto-highlight grants above 100k in any currency, without
+% touching the surrounding item text.
+\newcommand\gBoldIfBig[2]{\ifnum\fpeval{(#1)>=100}=1\textbf{#2}\else#2\fi}
+
+% Print a GBP/EUR total + PI-only sub-total pair (shared by \grantsubtotal
+% and \grantgrandtotal). #1=GBP total #2=GBP PI #3=EUR total #4=EUR PI.
+\newcommand\gPrintTotals[4]{%
+  \ifnum\fpeval{#1>0}=1
+    \pounds\gFmtMoney{#1}%
+    \ifnum\fpeval{#2>0}=1
+      \space(of which \pounds\gFmtMoney{#2} as PI)%
+    \fi
+  \fi
+  \ifnum\fpeval{#1>0}=1\ifnum\fpeval{#3>0}=1\relax\space\textbullet\space\fi\fi
+  \ifnum\fpeval{#3>0}=1
+    \euro\gFmtMoney{#3}%
+    \ifnum\fpeval{#4>0}=1
+      \space(of which \euro\gFmtMoney{#4} as PI)%
+    \fi
+  \fi
+}
+
+% \grantsubtotal: print the GBP/EUR totals (and PI-only sub-totals)
+% accumulated since the previous \grantsubtotal (or the start of the
+% grant list), then reset the accumulators for the next subsection.
+\newcommand\grantsubtotal{%
+  \par\vspace{0.15\baselineskip}%
+  \noindent{\small\itshape
+    \textbf{Subtotal:}\space
+    \gPrintTotals{\gGBPtotal}{\gGBPpi}{\gEURtotal}{\gEURpi}%
+  }\par
+  \xdef\gGBPtotal{0}\xdef\gGBPpi{0}%
+  \xdef\gEURtotal{0}\xdef\gEURpi{0}%
+}
+
+% \grantgrandtotal: print the overall GBP/EUR totals (+ PI sub-totals)
+% across the whole grant list. Relies on \gWriteGrantGrandTotal (called
+% at the end of the list) having written the values on a previous run.
+% Read back via \getrefnumber (from refcount, loaded by hyperref) rather
+% than \ref: plain \ref would come back wrapped in hyperref's hyperlink
+% markup, which \fpeval cannot parse as a number; \getrefnumber returns
+% the bare value (and "0" if it isn't known yet, on the very first run).
+\newcommand\grantgrandtotal{%
+  \par\noindent{\small\itshape
+    \textbf{Overall total:}\space
+    \gPrintTotals{\getrefnumber{grantgrand@GBP}}{\getrefnumber{grantgrand@GBPpi}}{\getrefnumber{grantgrand@EUR}}{\getrefnumber{grantgrand@EURpi}}%
+  }\par
+}
+
+\makeatletter
+\newcommand\gWriteGrantGrandTotal{%
+  \protected@write\@auxout{}{\string\newlabel{grantgrand@GBP}{{\gGBPgrand}{}{}{}{}}}%
+  \protected@write\@auxout{}{\string\newlabel{grantgrand@GBPpi}{{\gGBPgrandpi}{}{}{}{}}}%
+  \protected@write\@auxout{}{\string\newlabel{grantgrand@EUR}{{\gEURgrand}{}{}{}{}}}%
+  \protected@write\@auxout{}{\string\newlabel{grantgrand@EURpi}{{\gEURgrandpi}{}{}{}{}}}%
+}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Journals' names 
+%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\mnras}{{\em Mon.\ Not.\ R.~Astron.~Soc.~}}
+\newcommand{\mnraslett}{{\em Mon.~Not.~R.~Astron.~Soc.~Lett.}}
+\newcommand{\PRL}{{\em Phys.~Rev.~Lett.~}}
+\newcommand{\PRD}{{\em Phys.~Rev.~D~}}
+\newcommand{\PRB}{{\em Phys.~Rev.~B~}}
+\newcommand{\JHEP}{{\em JHEP~}}
+\newcommand{\JCAP}{{\em JCAP~}}
+\newcommand{\ApJ}{{\em ApJ~}}
+\newcommand{\ApJL}{{\em ApJL~}}
+\newcommand{\PLB}{{\em Phys. Lett. B~}}
+\newcommand{\NAR}{{\em New~Astron.~Rev.}}

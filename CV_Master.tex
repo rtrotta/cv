@@ -1,0 +1,117 @@
+\documentclass[10pt, a4paper]{article}
+
+% --- geometry ---
+\usepackage[a4paper, left=2cm, right=2cm, top=1.8cm, bottom=2cm]{geometry}
+
+% --- fonts & encoding ---
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[protrusion=true,expansion=false]{microtype}
+
+% --- colour & graphics ---
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tcolorbox}
+\usepackage{graphicx}
+
+% --- typography utilities ---
+\usepackage{titlecaps}
+% keep small words lowercase in title-cased headings
+\Addlcwords{a an and as at but by for in nor of off on or out per the to up via with without is be its it as from into onto over under within}
+\usepackage{xspace}
+\usepackage{xparse}
+\usepackage{enumitem}
+\usepackage{eurosym}
+\usepackage{xfp} % exact decimal arithmetic, used to auto-sum grant values
+\usepackage{etoolbox} % \ifstrequal, used for the grant PI-flag check (robust
+                       % string comparison -- avoids \ifx macro-equality,
+                       % which is sensitive to \long/short and xparse-internal
+                       % token wrapping and was found to fail silently on
+                       % some TeX distributions)
+
+% --- tabular & layout (needed by legacy modules) ---
+\usepackage{tabularx}
+\usepackage{marginnote}
+\usepackage{amsmath, amssymb}
+\usepackage{fancyhdr}
+\usepackage{needspace}
+
+% --- hyperlinks (xurl allows long URLs to break across lines) ---
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{lastpage}
+
+% --- list defaults ---
+\setlist[itemize]{noitemsep, topsep=0.2em, leftmargin=*}
+\setlist[enumerate]{topsep=0.3em, itemsep=0.1em, leftmargin=*}
+
+% --- styling commands (defines the cvaccent colour) ---
+\input{commands.tex}
+
+% --- hyperref colour setup (after cvaccent is defined) ---
+\hypersetup{
+  colorlinks=true,
+  linkcolor=cvaccent,
+  urlcolor=cvaccent,
+  citecolor=cvaccent
+}
+
+% --- page style ---
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\lfoot{\small\itshape Prof Roberto Trotta — Curriculum Vit\ae}
+\rfoot{\small page \thepage\ of \pageref{LastPage}}
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}%
+  \lfoot{\small\itshape Prof Roberto Trotta — Curriculum Vit\ae}%
+  \rfoot{\small page \thepage\ of \pageref{LastPage}}}
+
+\raggedbottom
+
+\begin{document}
+
+% =====================================================
+% HEADER
+% =====================================================
+\begin{center}
+{\LARGE\bfseries\color{cvaccent} Roberto Trotta}\\[0.3em]
+{\small MSc(Hons), PhD, FRAS, SFHEA \,\textbar\, DOB: 29.04.1977 \,\textbar\, SISSA, Trieste, Italy}\\[0.25em]
+{\small \href{mailto:rtrotta@sissa.it}{rtrotta@sissa.it} \,\textbar\,
+        \href{http://robertotrotta.com}{robertotrotta.com} \,\textbar\,
+        \href{https://orcid.org/0000-0002-3415-0707}{ORCID} \,\textbar\,
+        \href{https://www.linkedin.com/in/robertotrotta/}{LinkedIn} \,\textbar\,
+        \href{https://inspirehep.net/literature?sort=mostrecent&size=25&page=1&q=a%20R.Trotta.1&ui-citation-summary=true}{iNSPIRE} \,\textbar\,
+	\href{https://ui.adsabs.harvard.edu/search/q=orcid%3A0000-0002-3415-0707&sort=date%20desc%2C%20bibcode%20desc&p_=0}{NASA ads}
+}
+\end{center}
+
+% =====================================================
+% PART I — COMPACT
+% =====================================================
+\input{CV_Part1.tex}
+
+\clearpage
+
+% =====================================================
+% PART II — DETAILED RECORD (smaller font)
+% =====================================================
+\begin{center}
+\vspace*{-0.4em}
+{\color{cvaccent}\bfseries\large Part II \,---\, Detailed Record}\\[0.4em]
+{\itshape\small Full lists of appointments, details on grants, publications, knowledge transfer activities and public engagement.}
+\end{center}
+\vspace{0.5em}
+
+\begingroup
+\small
+\setlength{\datebox}{2.2cm}% Part II uses wider date column (fits all year-ranges)
+
+\input{CV_Academia.tex}
+\input{CV_Grants.tex}
+\input{CV_Publications.tex}
+\input{CV_Consulting.tex}
+\input{CV_PE_Publications.tex}
+\input{CV_PE_Activities.tex}
+
+\endgroup
+
+\end{document}
